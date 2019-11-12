@@ -149,7 +149,7 @@ void WordCount::dumpWordsSortedByWord(std::ostream &out) const {
 			sorted.push_back(table[i][j]);
 		}
 	}
-	sort(sorted.begin(), sorted.end());
+	std::sort(sorted.begin(), sorted.end());
 	for (int i = 0; i < sorted.size(); i++) {
 		out << sorted.at(i).first << "," << sorted.at(i).second << "\n";
 	}
@@ -164,7 +164,7 @@ void WordCount::dumpWordsSortedByOccurence(std::ostream &out) const {
 			sorted.push_back(table[i][j]);
 		}
 	}
-	sort(sorted.begin(), sorted.end(), sortBySecond);
+	std::sort(sorted.begin(), sorted.end(), sortBySecond);
 	for (int i = 0; i < sorted.size(); i++) {
 		out << sorted.at(i).first << "," << sorted.at(i).second << "\n";
 	}

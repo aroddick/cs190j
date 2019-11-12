@@ -143,5 +143,15 @@ void WordCount::dumpWordsSortedByOccurence(std::ostream &out) const {
 }
 
 void WordCount::addAllWords(std::string text) {
+	size_t previous = 0;
+	for (size_t i = 1; i <= text.length(); i++) {
+
+		if ((i == text.length()) || (text[i] == ' ') || (text[i] == '\n')) {
+			string token = text.substr(previous, i - previous);
+			incrWordCount(token);
+			previous = i + 1;
+		}
+
+	}
 	return;
 }

@@ -7,7 +7,6 @@ using namespace std;
 // Default constructor
 WordCount::WordCount() {}
 
-// Simple hash function. Do not modify.
 size_t WordCount::hash(std::string word) const {
 	size_t accumulator = 0;
 	for (size_t i = 0; i < word.size(); i++) {
@@ -17,49 +16,132 @@ size_t WordCount::hash(std::string word) const {
 }
 
 int WordCount::getTotalWords() const {
-	// STUB - your solution from Lab04 goes here
-	return -1;
+	size_t totalWords = 0;
+	for (size_t i = 0; i < CAPACITY; i++) {
+		if (table[i].size() > 0) {
+			for (size_t j = 0; j < table[i].size(); j++) {
+				totalWords += table[i][j].second;
+			}
+		}
+	}
+	return totalWords;
 }
 
 int WordCount::getNumUniqueWords() const {
-	// STUB - your solution from Lab04 goes here
-	return -1;
+	size_t totalUniqueWords = 0;
+	for (size_t i = 0; i < CAPACITY; i++) {
+		totalUniqueWords += table[i].size();
+	}
+	return totalUniqueWords;
 }
 
 int WordCount::getWordCount(std::string word) const {
-	// STUB - your solution from Lab04 goes here
-	return -1;
+	string strippedWord = stripWord(word);
+
+	string hashWord = "";
+	for (size_t i = 0; i < strippedWord.size(); i++) {
+		hashWord += toupper(strippedWord.at(i));
+	}
+
+	size_t hashIndex = hash(hashWord);
+
+	vector<pair<string, size_t> > v = table[hashIndex];
+
+	for (size_t i = 0; i < table[hashIndex].size(); i++) {
+		if (table[hashIndex][i].first == hashWord) {
+			return table[hashIndex][i].second;
+		}
+	}
+	return 0;
 }
 	
 
 int WordCount::incrWordCount(std::string word) {
-	// STUB - your solution from Lab04 goes here
-	return -1;
+	string strippedWord = stripWord(word);
+
+	string hashWord = "";
+	for (size_t i = 0; i < strippedWord.size(); i++) {
+		hashWord += toupper(strippedWord.at(i));
+	}
+
+	if (hashWord == "") {
+		return 0;
+	}
+
+	size_t hashIndex = hash(hashWord);
+
+	for (size_t i = 0; i < table[hashIndex].size(); i++) {
+		if (table[hashIndex][i].first == hashWord) {
+			table[hashIndex][i] =
+				pair<string, size_t>(hashWord, table[hashIndex][i].second + 1);
+			return table[hashIndex][i].second;
+		}
+	}
+	table[hashIndex].push_back(pair<string, size_t>(hashWord, 1));
+	return 1;
 }
 
 
 bool WordCount::isWordChar(char c) {
-	// STUB - your solution from Lab04 goes here
-	return false;
+	return
+    (c >=65 && c <= 90) ||	// upper case
+    (c >=97 && c <= 122);	// lower case
 }
 
 
 std::string WordCount::stripWord(std::string word) {
-	// STUB - your solution from Lab04 goes here
-	return "";
+
+	//char firstChar = ' ';
+	string firstString = "";
+	int frontIndex = 0;
+	// make sure the first char is alpha
+	for (size_t i = 0; i < word.size(); i++) {
+		frontIndex = i;
+		if (isWordChar(word.at(i))) {
+			firstString = word.at(i);
+			break;
+		}
+	}
+
+	// work backwards to make sure last char is alpha
+	//char lastChar = ' ';
+	int endIndex = word.size() - 1;
+	string endString = "";
+	for (int i = word.size() - 1; i > frontIndex; i--) {
+		endIndex = i;
+		if (isWordChar(word.at(i))) {
+			endString = word.at(i);
+			break;
+		}
+	}
+
+	// construct middle string
+	string strippedWord = "";
+	for (int i = frontIndex + 1; i < endIndex; i++) {
+		if (isWordChar(word.at(i)) || word.at(i) == 45 || word.at(i) == 39) {
+			strippedWord += word.at(i);
+		}
+	}
+
+	// put the first, end, and strippedWord together
+	if (firstString != "") {
+		strippedWord.insert(0, firstString);
+	}
+	if (endString != "") {
+		strippedWord.insert(strippedWord.size(), endString);
+	}
+
+	return strippedWord;
 }
 
 void WordCount::dumpWordsSortedByWord(std::ostream &out) const {
-	// STUB
 	return;
 }
 
 void WordCount::dumpWordsSortedByOccurence(std::ostream &out) const {
-	// STUB
 	return;
 }
 
 void WordCount::addAllWords(std::string text) {
-	// STUB
 	return;
 }

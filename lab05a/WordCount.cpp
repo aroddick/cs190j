@@ -1,8 +1,16 @@
 // WordCount.cpp
 
 #include "WordCount.h"
+#include <vector>
 
 using namespace std;
+
+bool sortBySecond(const pair<string, size_t> &a, const pair<string, size_t> &b) {
+	if (a.second == b.second) {
+		return (a.first < b.first);
+	}
+	return (a.second > b.second);
+}
 
 // Default constructor
 WordCount::WordCount() {}
@@ -135,10 +143,32 @@ std::string WordCount::stripWord(std::string word) {
 }
 
 void WordCount::dumpWordsSortedByWord(std::ostream &out) const {
+	vector<std::pair<std::string, size_t> > sorted;
+	for (int i = 0; i < CAPACITY; i++) {
+		for (int j = 0; j < table[i].size(); j++) {
+			sorted.push_back(table[i][j]);
+		}
+	}
+	sort(sorted.begin(), sorted.end());
+	for (int i = 0; i < sorted.size(); i++) {
+		out << sorted.at(i).first << "," << sorted.at(i).second << "\n";
+	}
+
 	return;
 }
 
 void WordCount::dumpWordsSortedByOccurence(std::ostream &out) const {
+	vector<std::pair<std::string, size_t> > sorted;
+	for (int i = 0; i < CAPACITY; i++) {
+		for (int j = 0; j < table[i].size(); j++) {
+			sorted.push_back(table[i][j]);
+		}
+	}
+	sort(sorted.begin(), sorted.end(), sortBySecond);
+	for (int i = 0; i < sorted.size(); i++) {
+		out << sorted.at(i).first << "," << sorted.at(i).second << "\n";
+	}
+
 	return;
 }
 

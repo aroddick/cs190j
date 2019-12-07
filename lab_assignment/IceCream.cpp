@@ -1,4 +1,6 @@
 // IceCream.cpp
+// Alan Roddick
+// 12/6/19
 
 #include <iostream>
 #include <vector>
